@@ -1,16 +1,14 @@
 import request from './request';
 
-import Database from '../utils/database';
+import Fixture from './fixture';
 
 describe('auth', () => {
   beforeAll(async () => {
-    const uri = process.env.MONGODB_URI! + '-test';
-    await Database.connect(uri);
-    await Database.initialize();
+    await Fixture.beforeAll();
   });
 
   afterAll(async () => {
-    await Database.disconnect();
+    await Fixture.afterAll();
   });
 
   it('should sign in superuser', async () => {
@@ -22,9 +20,7 @@ describe('auth', () => {
       .send({
         username,
         password,
-      })
-      .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json');
+      });
     expect(res.status).toBe(200);
     const { token, username: recievedUsername } = res.body;
     expect(token).toBeDefined();
@@ -40,9 +36,7 @@ describe('auth', () => {
       .send({
         username,
         password,
-      })
-      .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json');
+      });
     expect(res.status).toBe(400);
   });
 
@@ -55,9 +49,7 @@ describe('auth', () => {
       .send({
         username,
         password,
-      })
-      .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json');
+      });
     expect(res.status).toBe(400);
   });
 });

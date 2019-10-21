@@ -21,6 +21,10 @@ abstract class ErrorMiddleware {
       } else {
         status = 500;
       }
+      if (status === 500) {
+        // tslint:disable-next-line: no-console
+        console.error(err);
+      }
       const env = process.env.NODE_ENV;
       const message =
         env === 'production' && status === 500

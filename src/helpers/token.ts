@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import HttpError from './http-error';
 
 abstract class TokenHelper {
   public static createToken(object: object) {
@@ -11,7 +12,8 @@ abstract class TokenHelper {
       const secret = process.env.JWT_SECRET!;
       return jwt.verify(token, secret);
     } catch (err) {
-      return null;
+      err.status = 401;
+      throw err;
     }
   }
 }
